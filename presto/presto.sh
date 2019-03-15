@@ -27,7 +27,7 @@ if [[ -d /usr/local/share/google/dataproc/lib ]]; then
 else
   readonly CONNECTOR_JAR="$(find /usr/lib/hadoop/lib -name 'gcs-connector-*.jar')"
 fi
-readonly PRESTO_VERSION='0.206'
+readonly PRESTO_VERSION='302'
 readonly HTTP_PORT='8080'
 readonly INIT_SCRIPT='/usr/lib/systemd/system/presto.service'
 PRESTO_JVM_MB=0;
@@ -55,7 +55,7 @@ function wait_for_presto_cluster_ready() {
 
 function get_presto(){
   # Download and unpack Presto server
-  wget https://repo1.maven.org/maven2/com/facebook/presto/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz
+  wget https://repo1.maven.org/maven2/io/prestosql/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz
   tar -zxvf presto-server-${PRESTO_VERSION}.tar.gz
   mkdir -p /var/presto/data
 }
@@ -215,9 +215,6 @@ EOF
 }
 
 function configure_and_start_presto(){
-  # Copy required Jars
-  cp ${CONNECTOR_JAR} presto-server-${PRESTO_VERSION}/plugin/hive-hadoop2
-
   # Configure Presto
   mkdir -p presto-server-${PRESTO_VERSION}/etc/catalog
 
